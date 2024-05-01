@@ -13,10 +13,10 @@ class Program
     static void Main(string[] args)
     {
         Program program = new Program();
-        // program.BasicUse();
-        // program.AddElement();
+        program.BasicUse();
+        program.AddElement();
         program.AdditionalMethods();
-        // program.RemoveElement();
+        program.RemoveElement();
     }
 
     private void BasicUse()
