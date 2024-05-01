@@ -59,17 +59,9 @@ dotnet test
 - **.NET Core** - The framework used.
 - **MySQL** - Database management system.
 
-## 🤝 Contributing 🤝
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## 📃 Versioning 📃
-
-We use [SemVer](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your-username/sat-exam-preparation/tags).
-
 ## ✍️ Authors ✍️
 
-- **Your Name** - Initial work - [YourUsername](https://github.com/your-username)
+- **StefanPenchev05** - Initial work - [StefanPenchev05](https://github.com/StefanPenchev05)
 
 ## 📜 License 📜
 
