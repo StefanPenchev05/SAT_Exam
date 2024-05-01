@@ -32,33 +32,10 @@
 - **Input**: `List<T>` and an integer `k`
 - **Output**: Element of type `T`.
 
-## Classes
-
-### Stack Implementation Using a List
-- **Description**: Implements a stack data structure using a list.
-- **Methods**:
-  - `Push(T item)`: Adds an item to the stack.
-  - `Pop()`: Removes the top item from the stack and returns it.
-  - `Peek()`: Returns the top item without removing it from the stack.
-
-### Queue Implementation Using a List
-- **Description**: Implements a queue data structure using a list.
-- **Methods**:
-  - `Enqueue(T item)`: Adds an item to the end of the queue.
-  - `Dequeue()`: Removes the first item in the queue and returns it.
-  - `Peek()`: Returns the first item without removing it from the queue.
-
 ### Find Longest Sequence of Consecutive Elements
 - **Description**: Identifies the longest sequence of consecutive elements in a list.
 - **Input**: `List<T>`
 - **Output**: New `List<T>` representing the longest consecutive sequence.
-
-### Priority Queue Implementation Using a List
-- **Description**: Implements a priority queue using a list.
-- **Methods**:
-  - `Insert(T item)`: Inserts an item according to its priority.
-  - `Delete()`: Removes the highest priority item and returns it.
-  - `Peek()`: Returns the highest priority item without removing it.
 
 ## Usage
 
