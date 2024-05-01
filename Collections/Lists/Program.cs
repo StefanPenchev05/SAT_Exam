@@ -13,9 +13,10 @@ class Program
     static void Main(string[] args)
     {
         Program program = new Program();
-        program.BasicUse();
-        program.AddElement();
-        program.RemoveElement();
+        // program.BasicUse();
+        // program.AddElement();
+        program.AdditionalMethods();
+        // program.RemoveElement();
     }
 
     private void BasicUse()
@@ -86,6 +87,75 @@ class Program
         // ints.Clear();
 
         PrintList();
+    }
+
+    private void AdditionalMethods()
+    {
+        Console.WriteLine("---- Aditional Methods ----");
+
+        List<int> numbers = new List<int> { 5, 3, 1, 4, 2 };
+
+        // Sort
+        numbers.Sort();
+        Console.WriteLine($"Sort: {string.Join(", ", numbers)}");
+
+        // Binary Search
+        int index = numbers.BinarySearch(3);
+        Console.WriteLine($"Binary Search: {index}");
+
+        // Reverse
+        numbers.Reverse();
+        Console.WriteLine($"Reverse: {string.Join(", ", numbers)}");
+
+        // Find
+        int firstEven = numbers.Find(num => num % 2 == 0);
+        Console.WriteLine($"Find: {firstEven}");
+
+        // FindAll
+        List<int> allEven = numbers.FindAll(num => num % 2 == 0);
+        Console.WriteLine($"FindAll: {string.Join(", ", allEven)}");
+
+        // Exists
+        bool exists = numbers.Exists(num => num > 5);
+        Console.WriteLine($"Exists: {exists}");
+
+        // TrueForAll
+        bool allPositive = numbers.TrueForAll(num => num > 0);
+        Console.WriteLine($"TrueForAll: {allPositive}");
+
+        // ToArray
+        int[] array = numbers.ToArray();
+        Console.WriteLine($"ToArray: {string.Join(", ", array)}");
+
+        // CopyTo
+        int[] array2 = new int[5];
+        numbers.CopyTo(array2);
+        Console.WriteLine($"CopyTo: {string.Join(", ", array2)}");
+
+        // IndexOf
+        int indexOfThree = numbers.IndexOf(3);
+        Console.WriteLine($"IndexOf: {indexOfThree}");
+
+        // LastIndexOf
+        int lastIndexOfThree = numbers.LastIndexOf(3);
+        Console.WriteLine($"LastIndexOf: {lastIndexOfThree}");
+
+        // ForEach
+        Console.WriteLine("ForEach:");
+        numbers.ForEach(num => Console.WriteLine(num));
+
+        // GetRange
+        List<int> range = numbers.GetRange(1, 3);
+        Console.WriteLine($"GetRange: {string.Join(", ", range)}");
+
+        // TrimExcess
+        numbers.TrimExcess();
+        Console.WriteLine("TrimExcess executed");
+
+        // Capacity and Count
+        int capacity = numbers.Capacity;
+        int count = numbers.Count;
+        Console.WriteLine($"Capacity: {capacity}, Count: {count}");
     }
 
     private void PrintList()
