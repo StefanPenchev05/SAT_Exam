@@ -42,6 +42,11 @@ class Program
                         listActions.RemoveDuplicates(list);
                         Console.WriteLine($"{string.Join(" ", list)}");
                         break;
+                    case "findcommon":
+                        listActions.FindCommon(list);
+                        break;
+                    case "end":
+                        break;
                     default:
                         throw new Exception("Invalid Action!");
                 }
@@ -73,7 +78,7 @@ class ListActions
             merging_list.AddRange(Console.ReadLine().Split(" ").ToList());
         }
 
-        main_list.InsertRange(placeAt,merging_list);
+        main_list.InsertRange(placeAt, merging_list);
     }
 
     public void RemoveDuplicates(List<string> main_list)
@@ -81,11 +86,26 @@ class ListActions
         List<string> unique_state = new List<string>();
         foreach (var el in main_list)
         {
-            if(unique_state.Contains(el)) continue;
+            if (unique_state.Contains(el)) continue;
             unique_state.Add(el);
         }
 
         main_list.Clear();
         main_list.AddRange(unique_state);
+    }
+
+    public void FindCommon(List<string> main_list)
+    {
+        Console.Write("Enter your list: ");
+
+        List<string> input_list = Console.ReadLine().Split(" ").ToList();
+        List<string> command_list = new();
+
+        foreach (var el in input_list)
+        {
+            if (main_list.Contains(el) && command_list.Contains(el) == false) command_list.Add(el);
+        }
+        Console.WriteLine(string.Join(" ", command_list));
+
     }
 }
