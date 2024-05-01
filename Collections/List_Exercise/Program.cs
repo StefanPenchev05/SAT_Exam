@@ -38,7 +38,10 @@ class Program
                     case "mergelists":
                         listActions.MergeLists(list);
                         break;
-
+                    case "removeduplicates":
+                        listActions.RemoveDuplicates(list);
+                        Console.WriteLine($"{string.Join(" ", list)}");
+                        break;
                     default:
                         throw new Exception("Invalid Action!");
                 }
@@ -67,9 +70,22 @@ class ListActions
         for (int i = 1; i <= number_of_lists; i++)
         {
             Console.Write($"List {i}: ");
-            merging_list.InsertRange(placeAt,Console.ReadLine().Split(" ").ToList());
+            merging_list.InsertRange(placeAt, Console.ReadLine().Split(" ").ToList());
         }
 
         main_list.AddRange(merging_list);
+    }
+
+    public void RemoveDuplicates(List<string> main_list)
+    {
+        List<string> unique_state = new List<string>();
+        foreach (var el in main_list)
+        {
+            if(unique_state.Contains(el)) continue;
+            unique_state.Add(el);
+        }
+
+        main_list.Clear();
+        main_list.AddRange(unique_state);
     }
 }
