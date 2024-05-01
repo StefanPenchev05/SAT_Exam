@@ -70,10 +70,10 @@ class ListActions
         for (int i = 1; i <= number_of_lists; i++)
         {
             Console.Write($"List {i}: ");
-            merging_list.InsertRange(placeAt, Console.ReadLine().Split(" ").ToList());
+            merging_list.AddRange(Console.ReadLine().Split(" ").ToList());
         }
 
-        main_list.AddRange(merging_list);
+        main_list.InsertRange(placeAt,merging_list);
     }
 
     public void RemoveDuplicates(List<string> main_list)
