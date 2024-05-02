@@ -58,68 +58,43 @@ class Program
     private static bool CreateList()
     {
         Console.Clear();
-        string name;
-        while (true)
+        string name = GetUserInputAndValidate("Enter the name of the list",
+        "Please enter the name of the list",
+        "This ground does not exists",
+        (c =>
         {
-            try
+            if (!contact_lists.ContainsKey(c)) 
             {
-                Console.WriteLine("Enter exit, if you do not want this operation!");
-                Console.Write("Enter the name of the list: ");
-                name = Console.ReadLine().Trim().ToLower() ?? "";
-
-                if (name.Length == 0) throw new Exception("Please enter the name of the list");
-                else if (name == "exit") break;
-
-                if (contact_lists.ContainsKey(name)) throw new Exception("This ground already exists");
-
-                contact_lists.Add(name, new() { });
-                Console.Clear();
-
+                contact_lists.Add(c, new(){});
                 return true;
+            };
 
-            }
-            catch (Exception err)
-            {
-                Console.Clear();
-                Console.WriteLine(err.Message);
-            }
-        }
+            Console.Clear();
 
+            return false;
+        }));
         return false;
     }
 
     private static bool RemoveList()
     {
         Console.Clear();
-        string name;
-        while (true)
+        string name = GetUserInputAndValidate("Enter the name of the list",
+        "Please enter the name of the list",
+        "This ground does not exists",
+        (c =>
         {
-            try
-            {
-                Console.WriteLine("Enter exit, if you do not want this operation!");
-                Console.Write("Enter the name of the list: ");
-                name = Console.ReadLine().Trim().ToLower() ?? "";
+            if (!contact_lists.ContainsKey(c)) return false;
 
-                if (name.Length == 0) throw new Exception("Please enter the name of the list");
-                else if (name == "exit") break;
+            contact_lists.Remove(c);
+            Console.Clear();
 
-                if (!contact_lists.ContainsKey(name)) throw new Exception("This ground does not exists");
-
-                contact_lists.Remove(name);
-
-                return true;
-
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-        }
-
-        return false;
+            return true;
+        }));
+        return string.IsNullOrEmpty(name) ? false : true;
     }
 
-    private static void OperationOnSpecificList()
+    private static void OperationOnSpecificList(string nameOfGroup)
     {
         string action = "";
 
@@ -136,15 +111,15 @@ class Program
                 switch (action)
                 {
                     case "add":
-                        bool isAdded = AddContact();
+                        bool isAdded = AddContact(nameOfGroup);
                         if (isAdded) Console.WriteLine("Contact Added Successfully");
                         break;
                     case "remove":
-                        bool isRemoved = RemoveContact();
+                        bool isRemoved = RemoveContact(nameOfGroup);
                         if (isRemoved) Console.WriteLine("Contact Removed Successfully");
                         break;
                     case "exists":
-                        bool exists = Exists();
+                        bool exists = Exists(nameOfGroup);
                         if (exists) Console.WriteLine("This contact exists");
                         else Console.WriteLine("This contact does not exist, yet");
                         break;
@@ -165,94 +140,46 @@ class Program
         }
     }
 
-    private static bool AddContact()
+    private static bool AddContact(string nameOfGroup)
     {
         Console.Clear();
-        string number;
-        while (true)
+        string number = GetUserInputAndValidate("Please enter the number of the contact",
+        "You have to pass the number of the new contact",
+        "This contact already exsists",
+        (c =>
         {
-            try
-            {
-                Console.WriteLine("Enter exit, if you do not want to add a new contact");
-                Console.Write("Please enter the number of the contact: ");
-                number = Console.ReadLine() ?? "";
+            HashSet<string> contacts_from_group = contact_lists[nameOfGroup];
+            bool isAdded = contacts_from_group.Add(c);
+            return isAdded;
+        }));
 
-                if (number.Length == 0) throw new Exception("You have to pass the number of the new contact!");
-                else if (number == "exit") break;
-
-
-                bool isAdded = contacts.Add(number);
-                if (!isAdded) throw new Exception("This contact already exists");
-
-                return true;
-            }
-            catch (Exception err)
-            {
-                Console.Clear();
-                Console.WriteLine(err.Message);
-            }
-        }
-
-        return false;
+        return string.IsNullOrEmpty(number) ? false : true;
     }
 
-    private static bool RemoveContact()
+    private static bool RemoveContact(string nameOfGroup)
     {
         Console.Clear();
-        string contact;
-        while (true)
+        string contact = GetUserInputAndValidate("Please enter the number of the contact",
+        "You have to pass the number of the contact!",
+        "This contact does not exists",
+        (c =>
         {
-            try
-            {
-                Console.WriteLine("Enter exit, if you do not want to remove a contact");
-                Console.Write("Please enter the number of the contact: ");
-                contact = Console.ReadLine() ?? "";
-
-                if (contact.Length == 0) throw new Exception("You have to pass the number of the contact!");
-                else if (contact == "exit") break;
-
-                bool isRemoved = contacts.Remove(contact);
-                if (!isRemoved) throw new Exception("This contact does not exists");
-
-                return true;
-
-            }
-            catch (Exception err)
-            {
-                Console.Clear();
-                Console.WriteLine(err.Message);
-            }
-        }
-        return false;
+            HashSet<string> contacts_from_group = contact_lists[nameOfGroup];
+            bool isRemoved = contacts_from_group.Remove(c);
+            return isRemoved;
+        }));
+        return string.IsNullOrEmpty(contact) ? false : true;
     }
 
-    private static bool Exists()
+    private static bool Exists(string nameOfGroup)
     {
         Console.Clear();
-        string contact;
-        while (true)
-        {
-            try
-            {
-                Console.WriteLine("Enter exit, if you want to exit of this operation");
-                Console.Write("Please enter the number of the contact: ");
-                contact = Console.ReadLine() ?? "";
+        string contact = GetUserInputAndValidate("You have to pass the number of contact!", "Please enter the number of the contact");
+        HashSet<string> contacts_from_group = contact_lists[nameOfGroup];
+        bool exists = contacts_from_group.Contains(contact);
+        if (!exists) return false;
 
-                if (contact.Length == 0) throw new Exception("You have to pass the number of contact!");
-                else if (contact == "exit") break;
-
-                bool exists = contacts.Contains(contact);
-
-                return exists;
-
-            }
-            catch (Exception err)
-            {
-                Console.Clear();
-                Console.WriteLine(err.Message);
-            }
-        }
-        return false;
+        return true;
     }
 
     private static void DispalyAll()
@@ -270,11 +197,38 @@ class Program
         }
     }
 
-    private static string GetUserInputAndValidate(string onEmptyInput, string onInvalidInput, Func<string, bool> check)
+    private static string GetUserInputAndValidate(string welcomeMessage,
+                                                string onEmptyInput,
+                                                string? onInvalidInput = null,
+                                                Func<string, bool>? check = null)
     {
-        while(true)
+        string user_input;
+        while (true)
         {
+            try
+            {
+                Console.WriteLine("Enter exit, if you want to exit this operation");
+                Console.Write($"{welcomeMessage}: ");
+                user_input = Console.ReadLine() ?? "";
 
+                if (user_input.Length == 0) throw new Exception(onEmptyInput);
+                else if (user_input == "exit") break;
+
+                if (check == null) return user_input;
+                else
+                {
+                    if (check(user_input)) return user_input;
+                    else throw new Exception(onInvalidInput);
+                }
+
+            }
+            catch (Exception err)
+            {
+                Console.Clear();
+                Console.WriteLine(err.Message);
+            }
         }
+
+        return user_input;
     }
 }
