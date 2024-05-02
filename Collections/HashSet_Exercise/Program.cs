@@ -25,7 +25,7 @@ class Program
                     {
                         Console.WriteLine("Group {0} - contacts {1}", list.Key, list.Value.Count);
                     }
-                    Console.WriteLine("Actions:\n1) Add List\n2) Remove List");
+                    Console.WriteLine("Actions:\n1) Add List\n2) Remove List\n3) Select Group");
                 }
 
                 Console.Write("Enter Action: ");
@@ -40,6 +40,9 @@ class Program
                     case "remove":
                         bool isRemoved = RemoveList();
                         if (isRemoved) Console.WriteLine("List Removed Successfully");
+                        break;
+                    case "select":
+                        SelectGroup();
                         break;
                     case "end":
                         break;
@@ -58,14 +61,14 @@ class Program
     private static bool CreateList()
     {
         Console.Clear();
-        string name = GetUserInputAndValidate("Enter the name of the list",
+        var (_, isSuccess) = GetUserInputAndValidate("Enter the name of the list",
         "Please enter the name of the list",
         "This ground does not exists",
         (c =>
         {
-            if (!contact_lists.ContainsKey(c)) 
+            if (!contact_lists.ContainsKey(c))
             {
-                contact_lists.Add(c, new(){});
+                contact_lists.Add(c, new() { });
                 return true;
             };
 
@@ -73,13 +76,13 @@ class Program
 
             return false;
         }));
-        return false;
+        return isSuccess;
     }
 
     private static bool RemoveList()
     {
         Console.Clear();
-        string name = GetUserInputAndValidate("Enter the name of the list",
+        var (_, isSuccess) = GetUserInputAndValidate("Enter the name of the list",
         "Please enter the name of the list",
         "This ground does not exists",
         (c =>
@@ -91,7 +94,26 @@ class Program
 
             return true;
         }));
-        return string.IsNullOrEmpty(name) ? false : true;
+        return isSuccess;
+    }
+
+    private static void SelectGroup()
+    {
+        Console.Clear();
+        foreach (KeyValuePair<string, HashSet<string>> list in contact_lists)
+        {
+            Console.WriteLine("Group {0} - contacts {1}", list.Key, list.Value.Count);
+        }
+
+        var (group_name, _) = GetUserInputAndValidate("Enter a group name",
+        "You have to enter the group name",
+        "There is no group with that name",
+        (c => {
+            if(contact_lists.ContainsKey(c)) return true;
+            return false;
+        }));
+
+        OperationOnSpecificList(group_name);
     }
 
     private static void OperationOnSpecificList(string nameOfGroup)
@@ -143,7 +165,7 @@ class Program
     private static bool AddContact(string nameOfGroup)
     {
         Console.Clear();
-        string number = GetUserInputAndValidate("Please enter the number of the contact",
+        var (_, isSuccess) = GetUserInputAndValidate("Please enter the number of the contact",
         "You have to pass the number of the new contact",
         "This contact already exsists",
         (c =>
@@ -153,13 +175,13 @@ class Program
             return isAdded;
         }));
 
-        return string.IsNullOrEmpty(number) ? false : true;
+        return isSuccess;
     }
 
     private static bool RemoveContact(string nameOfGroup)
     {
         Console.Clear();
-        string contact = GetUserInputAndValidate("Please enter the number of the contact",
+        var (_, isSuccess) = GetUserInputAndValidate("Please enter the number of the contact",
         "You have to pass the number of the contact!",
         "This contact does not exists",
         (c =>
@@ -168,13 +190,13 @@ class Program
             bool isRemoved = contacts_from_group.Remove(c);
             return isRemoved;
         }));
-        return string.IsNullOrEmpty(contact) ? false : true;
+        return isSuccess;
     }
 
     private static bool Exists(string nameOfGroup)
     {
         Console.Clear();
-        string contact = GetUserInputAndValidate("You have to pass the number of contact!", "Please enter the number of the contact");
+        var (contact, _) = GetUserInputAndValidate("You have to pass the number of contact!", "Please enter the number of the contact");
         HashSet<string> contacts_from_group = contact_lists[nameOfGroup];
         bool exists = contacts_from_group.Contains(contact);
         if (!exists) return false;
@@ -197,7 +219,7 @@ class Program
         }
     }
 
-    private static string GetUserInputAndValidate(string welcomeMessage,
+    private static (string, bool) GetUserInputAndValidate(string welcomeMessage,
                                                 string onEmptyInput,
                                                 string? onInvalidInput = null,
                                                 Func<string, bool>? check = null)
@@ -214,10 +236,10 @@ class Program
                 if (user_input.Length == 0) throw new Exception(onEmptyInput);
                 else if (user_input == "exit") break;
 
-                if (check == null) return user_input;
+                if (check == null) return (user_input, true);
                 else
                 {
-                    if (check(user_input)) return user_input;
+                    if (check(user_input)) return (user_input, true);
                     else throw new Exception(onInvalidInput);
                 }
 
@@ -229,6 +251,6 @@ class Program
             }
         }
 
-        return user_input;
+        return (user_input, false);
     }
 }
