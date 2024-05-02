@@ -1,10 +1,11 @@
 ﻿namespace Lists;
 
 
-// Definition:
-// Provides indexed access to its elements and maintains the order in which elements are added. 
-// Each element in a List can be accessed using an integer index, elements can be searched,
-// and the list can be traversed using enumeration.
+/// <summary>
+/// Provides indexed access to its elements and maintains the order in which elements are added. 
+/// Each element in a List can be accessed using an integer index, elements can be searched,
+/// and the list can be traversed using enumeration.
+/// </summary>
 class Program
 {
     // Create new list of integers, List<T>, while T is generic
