@@ -5,7 +5,6 @@ namespace HashSet_Exercise;
 class Program
 {
     public static Dictionary<string, HashSet<string>> contact_lists = new();
-    public static HashSet<string> contacts = new();
     static void Main(string[] args)
     {
         Console.Clear();
@@ -114,13 +113,14 @@ class Program
         }));
 
         OperationOnSpecificList(group_name);
+        Console.Clear();
     }
 
     private static void OperationOnSpecificList(string nameOfGroup)
     {
         string action = "";
 
-        while (action != "end")
+        while (action != "exit")
         {
             try
             {
@@ -148,7 +148,7 @@ class Program
                     case "display":
                         DispalyAll();
                         break;
-                    case "end":
+                    case "exit":
                         break;
                     default:
                         throw new Exception("Invalid Action");
@@ -204,16 +204,17 @@ class Program
         return true;
     }
 
-    private static void DispalyAll()
+    private static void DispalyAll(string nameOfGroup)
     {
         Console.Clear();
-        if (contacts.Count() == 0)
+        HashSet<string> contacts_of_group = contact_lists[nameOfGroup];
+        if (contacts_of_group.Count() == 0)
         {
             Console.WriteLine("You does not have any contact in the list");
             return;
         }
 
-        foreach (var contact in contacts)
+        foreach (var contact in contacts_of_group)
         {
             Console.WriteLine(contact);
         }
