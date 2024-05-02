@@ -40,10 +40,14 @@ class Program
                         break;
                     case "removeduplicates":
                         listActions.RemoveDuplicates(list);
-                        Console.WriteLine($"{string.Join(" ", list)}");
                         break;
                     case "findcommon":
                         listActions.FindCommon(list);
+                        break;
+                    case "predicate":
+                        var (trueList, falseList) = listActions.PartitionList(list, (x => int.Parse(x) > 5));
+                        Console.WriteLine($"True List: {string.Join(" ", trueList)}");
+                        Console.WriteLine($"False List: {string.Join(" ", falseList)}");
                         break;
                     case "end":
                         break;
@@ -107,5 +111,13 @@ class ListActions
         }
         Console.WriteLine(string.Join(" ", command_list));
 
+    }
+
+    public(List<T>, List<T>)PartitionList<T>(List<T> list, Predicate<T> predicate)
+    {
+        List<T> trueList = list.FindAll(predicate);
+        List<T> falseList = list.FindAll(x => !predicate(x));
+
+        return (trueList, falseList);
     }
 }
