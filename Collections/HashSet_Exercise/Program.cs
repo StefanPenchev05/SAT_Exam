@@ -30,6 +30,11 @@ class Program
                         bool isRemoved = RemoveContact();
                         if (isRemoved) Console.WriteLine("Contact Removed Successfully");
                         break;
+                    case "exists":
+                        bool exists = Exists();
+                        if(exists) Console.WriteLine("This contact exists");
+                        else Console.WriteLine("This contact does not exist");
+                        break;
                     case "end":
                         break;
                     default:
@@ -86,13 +91,41 @@ class Program
                 Console.Write("Please enter the number of the contact: ");
                 contact = Console.ReadLine() ?? "";
 
-                if (contact.Length == 0) throw new Exception("You have to pass the number of the new contact!");
+                if (contact.Length == 0) throw new Exception("You have to pass the number of the contact!");
                 else if (contact == "exit") break;
 
                 bool isRemoved = contacts.Remove(contact);
                 if (!isRemoved) throw new Exception("This contact does not exists");
 
                 return true;
+
+            }
+            catch (Exception err)
+            {
+                Console.Clear();
+                Console.WriteLine(err.Message);
+            }
+        }
+        return false;
+    }
+
+    private static bool Exists()
+    {
+        string contact;
+        while (true)
+        {
+            try
+            {
+                Console.WriteLine("Enter exit, if you want to exit of this operation");
+                Console.Write("Please enter the number of the contact: ");
+                contact = Console.ReadLine() ?? "";
+
+                if (contact.Length == 0) throw new Exception("You have to pass the number of contact!");
+                else if (contact == "exit") break;
+
+                bool exists = contacts.Contains(contact);
+
+                return exists;
 
             }
             catch (Exception err)
