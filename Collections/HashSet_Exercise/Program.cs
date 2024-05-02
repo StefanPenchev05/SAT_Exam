@@ -4,10 +4,123 @@ namespace HashSet_Exercise;
 
 class Program
 {
+    public static Dictionary<string, HashSet<string>> contact_lists = new();
     public static HashSet<string> contacts = new();
     static void Main(string[] args)
     {
         Console.Clear();
+        string action = "";
+        while (action != "end")
+        {
+            try
+            {
+                if (contact_lists.Count == 0)
+                {
+                    Console.WriteLine("You do not have any lists, you need to create one!");
+                    Console.WriteLine("Actions: \n1) Add List");
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, HashSet<string>> list in contact_lists)
+                    {
+                        Console.WriteLine("Group {0} - contacts {1}", list.Key, list.Value.Count);
+                    }
+                    Console.WriteLine("Actions:\n1) Add List\n2) Remove List");
+                }
+
+                Console.Write("Enter Action: ");
+                action = Console.ReadLine().Trim().ToLower() ?? "";
+
+                switch (action)
+                {
+                    case "add":
+                        bool isListCreated = CreateList();
+                        if (isListCreated) Console.WriteLine("List Created Successfully");
+                        break;
+                    case "remove":
+                        bool isRemoved = RemoveList();
+                        if (isRemoved) Console.WriteLine("List Removed Successfully");
+                        break;
+                    case "end":
+                        break;
+                    default:
+                        throw new Exception("Invalid Command!");
+                }
+            }
+            catch (Exception err)
+            {
+                Console.Clear();
+                Console.WriteLine(err.Message);
+            }
+        }
+    }
+
+    private static bool CreateList()
+    {
+        Console.Clear();
+        string name;
+        while (true)
+        {
+            try
+            {
+                Console.WriteLine("Enter exit, if you do not want this operation!");
+                Console.Write("Enter the name of the list: ");
+                name = Console.ReadLine().Trim().ToLower() ?? "";
+
+                if (name.Length == 0) throw new Exception("Please enter the name of the list");
+                else if (name == "exit") break;
+
+                if (contact_lists.ContainsKey(name)) throw new Exception("This ground already exists");
+
+                contact_lists.Add(name, new() { });
+                Console.Clear();
+
+                return true;
+
+            }
+            catch (Exception err)
+            {
+                Console.Clear();
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        return false;
+    }
+
+    private static bool RemoveList()
+    {
+        Console.Clear();
+        string name;
+        while (true)
+        {
+            try
+            {
+                Console.WriteLine("Enter exit, if you do not want this operation!");
+                Console.Write("Enter the name of the list: ");
+                name = Console.ReadLine().Trim().ToLower() ?? "";
+
+                if (name.Length == 0) throw new Exception("Please enter the name of the list");
+                else if (name == "exit") break;
+
+                if (!contact_lists.ContainsKey(name)) throw new Exception("This ground does not exists");
+
+                contact_lists.Remove(name);
+
+                return true;
+
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        return false;
+    }
+
+    private static void OperationOnSpecificList()
+    {
         string action = "";
 
         while (action != "end")
@@ -154,6 +267,14 @@ class Program
         foreach (var contact in contacts)
         {
             Console.WriteLine(contact);
+        }
+    }
+
+    private static string GetUserInputAndValidate(string onEmptyInput, string onInvalidInput, Func<string, bool> check)
+    {
+        while(true)
+        {
+
         }
     }
 }
