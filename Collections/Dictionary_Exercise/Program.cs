@@ -4,18 +4,20 @@ class Program
 {
     static void Main(string[] args)
     {
-        Program program = new Program();
-        Console.WriteLine("1) With List\n2)Without List");
+        ;
+        Console.WriteLine("1) With List\n2) Without List");
         string choice = Console.ReadLine();
-        if(choice == "1")
+        if (choice == "1")
         {
-            program.withList();
-        }else{
-
+            withList();
+        }
+        else
+        {
+            withOutList();
         }
     }
 
-    private void withList()
+    private static void withList()
     {
         List<string> sentence = new();
         while (true)
@@ -35,7 +37,6 @@ class Program
         }
 
         List<string> formettedSentence = new();
-        // This is some exmaple sentace. -> ["This", "is", "some" ... "sentence."]
 
         foreach (string word in sentence)
         {
@@ -66,11 +67,54 @@ class Program
             words.Add(word_to_lowwer, 1);
         }
 
-        foreach (KeyValuePair<string, int> kvp in words)
+        foreach (KeyValuePair<string, int> entry in words)
         {
-            Console.WriteLine("{0} : {1}", kvp.Key, kvp.Value);
+            Console.WriteLine($"Word: {entry.Key}, Frequency: {entry.Value}");
         }
     }
 
-    
+    private static void withOutList()
+    {
+        string sentence;
+        string[] words = { };
+        while (true)
+        {
+            Console.Write("Please, enter your sentence: ");
+            sentence = Console.ReadLine().ToLower();
+            if (sentence.Length == 0)
+            {
+                Console.WriteLine("Sorry, you have to write sentence");
+                continue;
+            }
+
+            words = sentence.Split(' ');
+            break;
+        }
+
+        for(int i = 0; i <= words.Length - 1; i++)
+        {
+            string word = words[i];
+            if(word[word.Length - 1] == '.')
+            {
+                words[i] = word.Substring(0, word.Length - 1);
+            }
+        }
+
+        Dictionary<string, int> wordFrequency = new();
+        foreach (var word in words)
+        {
+            if (wordFrequency.ContainsKey(word))
+            {
+                wordFrequency[word]++;
+                continue;
+            }
+
+            wordFrequency.Add(word, 1);
+        }
+
+        foreach (KeyValuePair<string, int> entry in wordFrequency)
+        {
+            Console.WriteLine($"Word: {entry.Key}, Frequency: {entry.Value}");
+        }
+    }
 }
