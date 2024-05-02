@@ -14,9 +14,9 @@ class Program
         {
             try
             {
-                Console.WriteLine("Available actions: \nAdd\nRemove\nExsists\nAll");
+                Console.WriteLine("Available actions: \nAdd\nRemove\nExsists\nDispaly");
                 Console.Write("Please choose one of them: ");
-                action = Console.ReadLine() ?? "";
+                action = Console.ReadLine().Trim() ?? "";
 
                 if (action.Length == 0) throw new Exception("Action cannot be empty!");
 
@@ -32,8 +32,11 @@ class Program
                         break;
                     case "exists":
                         bool exists = Exists();
-                        if(exists) Console.WriteLine("This contact exists");
-                        else Console.WriteLine("This contact does not exist");
+                        if (exists) Console.WriteLine("This contact exists");
+                        else Console.WriteLine("This contact does not exist, yet");
+                        break;
+                    case "display":
+                        DispalyAll();
                         break;
                     case "end":
                         break;
@@ -82,6 +85,7 @@ class Program
 
     private static bool RemoveContact()
     {
+        Console.Clear();
         string contact;
         while (true)
         {
@@ -111,6 +115,7 @@ class Program
 
     private static bool Exists()
     {
+        Console.Clear();
         string contact;
         while (true)
         {
@@ -135,5 +140,20 @@ class Program
             }
         }
         return false;
+    }
+
+    private static void DispalyAll()
+    {
+        Console.Clear();
+        if (contacts.Count() == 0)
+        {
+            Console.WriteLine("You does not have any contact in the list");
+            return;
+        }
+
+        foreach (var contact in contacts)
+        {
+            Console.WriteLine(contact);
+        }
     }
 }
