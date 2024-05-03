@@ -107,8 +107,9 @@ class Program
         var (group_name, _) = GetUserInputAndValidate("Enter a group name",
         "You have to enter the group name",
         "There is no group with that name",
-        (c => {
-            if(contact_lists.ContainsKey(c)) return true;
+        (c =>
+        {
+            if (contact_lists.ContainsKey(c)) return true;
             return false;
         }));
 
@@ -124,7 +125,7 @@ class Program
         {
             try
             {
-                Console.WriteLine("Available actions: \nAdd\nRemove\nExsists\nDispaly");
+                Console.WriteLine("Available actions: \nAdd\nRemove\nExsists\nCombine with\nDispaly");
                 Console.Write("Please choose one of them: ");
                 action = Console.ReadLine().Trim() ?? "";
 
@@ -146,7 +147,19 @@ class Program
                         else Console.WriteLine("This contact does not exist, yet");
                         break;
                     case "display":
-                        DispalyAll();
+                        DispalyAll(nameOfGroup);
+                        break;
+                    case "combine":
+                        bool isCombined = CombineGroupWithOtherGroup(nameOfGroup);
+                        if(isCombined)
+                        {
+                            Console.WriteLine("Combined Successfully\nThe list before combining: ");
+                            foreach(var contact in contact_lists[nameOfGroup])
+                            {
+                                Console.WriteLine(contact);
+                            }
+                        }
+
                         break;
                     case "exit":
                         break;
@@ -200,6 +213,34 @@ class Program
         HashSet<string> contacts_from_group = contact_lists[nameOfGroup];
         bool exists = contacts_from_group.Contains(contact);
         if (!exists) return false;
+
+        return true;
+    }
+
+    private static bool CombineGroupWithOtherGroup(string currentNameOfGroup)
+    {
+        Console.Clear();
+        foreach (KeyValuePair<string, HashSet<string>> list in contact_lists)
+        {
+            Console.WriteLine("Group {0} - contacts {1}", list.Key, list.Value.Count);
+        }
+
+        var (other_group, _) = GetUserInputAndValidate("Enter the name of the group",
+        "You need to enter the name of the group",
+        "There is no group with this name",
+        (c =>
+        {
+            if (!contact_lists.ContainsKey(c)) return false;
+
+            return true;
+        }));
+
+        HashSet<string> current_group = contact_lists[currentNameOfGroup];
+        HashSet<string> otherGroup = contact_lists[other_group];
+
+        current_group.UnionWith(otherGroup);
+
+        contact_lists.Remove(other_group);
 
         return true;
     }
