@@ -163,11 +163,16 @@ namespace QuerySyntax
             return from student in students orderby student.Name, student.Age descending select student;
         }
 
+        // Define a method to group students by age
         public static IEnumerable<IGrouping<int, Student>> GroupStudents(List<Student> students)
         {
+            // Use LINQ to group the students by age
+            // 'from student in students' iterates over each student in the list
+            // 'group student by student.Age' groups the students by their age
+            // 'into ageGroup' gives a name to each group
+            // 'select ageGroup' selects each group to be returned by the query
             return from student in students group student by student.Age into ageGroup select ageGroup;
         }
-
     }
 
     // Static class LinqMethodImpl that contains extension methods for IEnumerable<T>
