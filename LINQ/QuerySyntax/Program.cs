@@ -106,7 +106,7 @@ namespace QuerySyntax
                 Console.WriteLine($"{student.Name} --> {student.Age}");
             }
 
-            Console.WriteLine("-----Impl Linq Method Select-----");
+            Console.WriteLine("-----Impl Linq Method Group but in Dictionary-----");
             var groupedUsers = students.GroupIntoDictionary(s => s.Subject);
             foreach (var student in groupedUsers)
             {
@@ -115,6 +115,17 @@ namespace QuerySyntax
                     Console.WriteLine("Key: {0}", s.Key);
                 }
             }
+
+            Console.WriteLine("-----Impl Linq Method Group but in List-----");
+            var groupedUsersIntoList = students.GroupIntoList(s => s.Subject);
+            foreach (var studentGroup in groupedUsersIntoList)
+            {
+               foreach(var student in studentGroup)
+               {
+                    student.Introduce();
+               }
+            }
+
         }
 
         // Method to perform various queries on the list of students
@@ -256,6 +267,47 @@ namespace QuerySyntax
 
             // Return the list of groups
             return groups;
+        }
+
+
+        // List -> List<Students> = {{some students}, {some students} , {somestudents}}
+
+        // {"Stefan" ... "Math"}, {"Dimitar" ... "Math"}, {"Viktor" ... "IT"}
+        // Define a method to group values into lists
+        public static List<List<T>> GroupIntoList<T, TResult>(this IEnumerable<T> values, Func<T, TResult> query)
+        {
+            // Create a dictionary to store the groups
+            Dictionary<TResult, List<T>> groups = new();
+
+            // Iterate over each value in the input sequence
+            foreach(var value in values)
+            {
+                // Use the query function to get the key for the current value
+                var key = query(value);
+
+                // If the group for this key already exists, add the value to it
+                if(groups.ContainsKey(key))
+                {
+                    groups[key].Add(value);
+                    continue;
+                }
+
+                // If the group for this key does not exist, create it and add the value
+                groups[key] = new List<T>(){{value}};
+            }
+
+            // Create a list to store the groups
+            List<List<T>> groupsList = new List<List<T>>();
+
+            // Iterate over each group in the dictionary
+            foreach(var group in groups)
+            {
+                // Add the group to the list
+                groupsList.Add(group.Value);
+            }
+
+            // Return the list of groups
+            return groupsList;
         }
     }
 }
