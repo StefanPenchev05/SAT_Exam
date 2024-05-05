@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using System.Text.RegularExpressions;
+using Microsoft.VisualBasic;
 
 namespace QuerySyntax
 {
@@ -104,6 +105,16 @@ namespace QuerySyntax
             {
                 Console.WriteLine($"{student.Name} --> {student.Age}");
             }
+
+            Console.WriteLine("-----Impl Linq Method Select-----");
+            var groupedUsers = students.GroupIntoDictionary(s => s.Subject);
+            foreach (var student in groupedUsers)
+            {
+                foreach (KeyValuePair<string, Student> s in student)
+                {
+                    Console.WriteLine("Key: {0}", s.Key);
+                }
+            }
         }
 
         // Method to perform various queries on the list of students
@@ -138,7 +149,7 @@ namespace QuerySyntax
             Console.WriteLine("-----Group By Age Students-----");
             foreach (var student in groupStudent)
             {
-                foreach(var s in student)
+                foreach (var s in student)
                 {
                     s.Introduce();
                 }
@@ -205,6 +216,46 @@ namespace QuerySyntax
 
             // Return the new list as an IEnumerable<TResult>
             return newList;
+        }
+
+        // Define a method to group values into dictionaries
+        public static IEnumerable<Dictionary<TResult, T>> GroupIntoDictionary<T, TResult>(this IEnumerable<T> values, Func<T, TResult> query)
+        {
+            // Create a list to store the groups
+            List<Dictionary<TResult, T>> groups = new List<Dictionary<TResult, T>>();
+
+            // Convert the input sequence to a list
+            var valuesList = values.ToList();
+
+            // Iterate over each value in the list
+            for(var i = 0; i < valuesList.Count(); i++)
+            {
+                // Use the query function to get the key for the current value
+                var key = query(valuesList[i]);
+                bool keyFound = false;
+
+                // Iterate over each group
+                for(int v = 0; v < groups.Count(); v++)
+                {
+                    // If the group contains the key, update the value and set keyFound to true
+                    if(groups[v].ContainsKey(key))
+                    {
+                        groups[v][key] = valuesList[i];
+                        keyFound = true;
+                        break;
+                    }
+                }
+
+                // If the key was not found in any group, create a new group with the key and value
+                if(!keyFound)
+                {
+                    var newGroup = new Dictionary<TResult, T>() {{key, valuesList[i]}};
+                    groups.Add(newGroup);
+                }
+            }
+
+            // Return the list of groups
+            return groups;
         }
     }
 }
