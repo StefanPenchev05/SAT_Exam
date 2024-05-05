@@ -132,6 +132,17 @@ namespace QuerySyntax
             {
                 student.Introduce();
             }
+
+            // Group students by age and introduce them
+            IEnumerable<IGrouping<int, Student>> groupStudent = GroupStudents(students);
+            Console.WriteLine("-----Group By Age Students-----");
+            foreach (var student in groupStudent)
+            {
+                foreach(var s in student)
+                {
+                    s.Introduce();
+                }
+            }
         }
 
         // Method to get students with a grade above 80
@@ -151,6 +162,12 @@ namespace QuerySyntax
         {
             return from student in students orderby student.Name, student.Age descending select student;
         }
+
+        public static IEnumerable<IGrouping<int, Student>> GroupStudents(List<Student> students)
+        {
+            return from student in students group student by student.Age into ageGroup select ageGroup;
+        }
+
     }
 
     // Static class LinqMethodImpl that contains extension methods for IEnumerable<T>
