@@ -1,0 +1,7 @@
+Hello, this is the first line of the file.
+This is the second line.
+And this is the third line.
+Each of these lines will be read as a separate string when using File.ReadAllLines.
+You can add as many lines as you want.
+Just remember that each line is a separate string.
+Happy coding!

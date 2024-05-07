@@ -6,8 +6,9 @@ class Program
     {
         Program program = new Program();
         string path = "./TextFile.txt";
-        //program.AppendText(path);
-        program.AddingTextUsingArrays(path);
+        // program.AppendText(path);
+        // program.AddingTextUsingArrays(path);
+        program.Write(path);
 
 
 
@@ -57,5 +58,24 @@ class Program
 
         // Notify the user that the text has been written to the file.
         Console.WriteLine("Text written to file successfully.");
+    }
+
+    public void Write(string path)
+    {
+        // Create a StreamWriter that writes to the file at the specified path.
+        StreamWriter sm = new StreamWriter(path);
+
+        // Write a string to the file. This does not add a newline at the end.
+        sm.Write("Some text i am writing");
+
+        // Write another string to the file. This will be appended directly after the previous string.
+        sm.Write("Some text i am writing - 2");
+
+        // Write a third string to the file. This will be appended directly after the previous string.
+        sm.Write("Some text i am writing - 3");
+
+        // Close the StreamWriter. This flushes any remaining data to the file, releases any system resources
+        // associated with the writer, and makes the file available for reading by other processes.
+        sm.Close();
     }
 }
