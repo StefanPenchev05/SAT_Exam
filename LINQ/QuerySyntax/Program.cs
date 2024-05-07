@@ -120,10 +120,24 @@ namespace QuerySyntax
             var groupedUsersIntoList = students.GroupIntoList(s => s.Subject);
             foreach (var studentGroup in groupedUsersIntoList)
             {
-               foreach(var student in studentGroup)
-               {
+                foreach (var student in studentGroup)
+                {
                     student.Introduce();
-               }
+                }
+            }
+
+            Console.WriteLine("-----Impl of them all at one time----");
+            var topThreeScoring = students
+                .Where(s => s.Grade > 40)
+                .Select(s => new {s.Name, s.Age, s.Subject})
+                .GroupIntoList(s => s.Subject);
+
+            foreach (var studentGroup in topThreeScoring)
+            {
+                foreach (var student in studentGroup)
+                {
+                    Console.WriteLine($"{student.Name} and {student.Age} and {student.Subject}");
+                }
             }
 
         }
@@ -239,17 +253,17 @@ namespace QuerySyntax
             var valuesList = values.ToList();
 
             // Iterate over each value in the list
-            for(var i = 0; i < valuesList.Count(); i++)
+            for (var i = 0; i < valuesList.Count(); i++)
             {
                 // Use the query function to get the key for the current value
                 var key = query(valuesList[i]);
                 bool keyFound = false;
 
                 // Iterate over each group
-                for(int v = 0; v < groups.Count(); v++)
+                for (int v = 0; v < groups.Count(); v++)
                 {
                     // If the group contains the key, update the value and set keyFound to true
-                    if(groups[v].ContainsKey(key))
+                    if (groups[v].ContainsKey(key))
                     {
                         groups[v][key] = valuesList[i];
                         keyFound = true;
@@ -258,9 +272,9 @@ namespace QuerySyntax
                 }
 
                 // If the key was not found in any group, create a new group with the key and value
-                if(!keyFound)
+                if (!keyFound)
                 {
-                    var newGroup = new Dictionary<TResult, T>() {{key, valuesList[i]}};
+                    var newGroup = new Dictionary<TResult, T>() { { key, valuesList[i] } };
                     groups.Add(newGroup);
                 }
             }
@@ -280,27 +294,27 @@ namespace QuerySyntax
             Dictionary<TResult, List<T>> groups = new();
 
             // Iterate over each value in the input sequence
-            foreach(var value in values)
+            foreach (var value in values)
             {
                 // Use the query function to get the key for the current value
                 var key = query(value);
 
                 // If the group for this key already exists, add the value to it
-                if(groups.ContainsKey(key))
+                if (groups.ContainsKey(key))
                 {
                     groups[key].Add(value);
                     continue;
                 }
 
                 // If the group for this key does not exist, create it and add the value
-                groups[key] = new List<T>(){{value}};
+                groups[key] = new List<T>() { { value } };
             }
 
             // Create a list to store the groups
             List<List<T>> groupsList = new List<List<T>>();
 
             // Iterate over each group in the dictionary
-            foreach(var group in groups)
+            foreach (var group in groups)
             {
                 // Add the group to the list
                 groupsList.Add(group.Value);
