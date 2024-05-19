@@ -17,11 +17,11 @@ class Program
     static int[] makeRandomArray()
     {
         Random random = new Random();
-        int[] nums = new int[5];
+        int[] nums = new int[15];
 
         for (int i = 0; i < nums.Length; i++)
         {
-            nums[i] = random.Next(1, 30);
+            nums[i] = random.Next(1, 100);
         }
 
         return nums;
